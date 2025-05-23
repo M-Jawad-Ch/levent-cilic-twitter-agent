@@ -26,6 +26,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 openai.api_key = OPENAI_API_KEY
 
+CRON_CLASSES = [
+    "agent.cron.Tweeter",
+]
+
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -33,6 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_cron",
+    "agent",
+    "dashboard",
 ]
 
 MIDDLEWARE = [
@@ -50,7 +58,7 @@ ROOT_URLCONF = "twitteragent.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -62,6 +70,14 @@ TEMPLATES = [
         },
     },
 ]
+
+# Redirect after login/logout
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/login/"
+LOGIN_URL = "/login/"
+
+# Add this if not already in your settings:
+TEMPLATES[0]["DIRS"] = [BASE_DIR / "templates"]
 
 WSGI_APPLICATION = "twitteragent.wsgi.application"
 

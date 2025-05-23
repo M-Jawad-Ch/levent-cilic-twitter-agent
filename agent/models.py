@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator
 
 
 class Tweet(models.Model):
@@ -14,3 +14,12 @@ class Tweet(models.Model):
 
     class Meta:
         ordering = ["-tweeted_at"]
+
+
+class BotStatus(models.Model):
+    is_active = models.BooleanField(default=False)
+    interval_minutes = models.PositiveIntegerField(
+        default=90,
+        validators=[MinValueValidator(90)],
+        help_text="Tweeting interval in minutes (minimum 90)"
+    )

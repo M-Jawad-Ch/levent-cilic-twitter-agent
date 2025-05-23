@@ -10,8 +10,6 @@ class NewsDataFetchFailed(Exception):
 def fetch_latest_news(query: str):
 
     for i in range(10):
-        print(f"KEY: {settings.NEWS_DATA_API_KEY}")
-
         res = requests.get(
             "https://newsdata.io/api/1/latest",
             params={"apikey": settings.NEWS_DATA_API_KEY, "q": query},

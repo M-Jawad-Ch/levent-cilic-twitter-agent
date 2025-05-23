@@ -7,7 +7,7 @@ class ArticleFetchFailed(Exception):
 
 
 def fetch_article(url: str):
-    for i in range(10):
+    for i in range(1):
         res = requests.get(url)
 
         if res.status_code == 200:
@@ -16,6 +16,6 @@ def fetch_article(url: str):
         sleep(2 * (i + 1))
 
     else:
-        raise ArticleFetchFailed("Fetch failed.")
+        raise ArticleFetchFailed("Article fetch failed.")
 
     return res.text
