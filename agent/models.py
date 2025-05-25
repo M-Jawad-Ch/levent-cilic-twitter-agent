@@ -21,5 +21,7 @@ class BotStatus(models.Model):
     interval_minutes = models.PositiveIntegerField(
         default=90,
         validators=[MinValueValidator(90)],
-        help_text="Tweeting interval in minutes (minimum 90)"
+        help_text="Tweeting interval in minutes (minimum 90)",
     )
+    ai_prompt = models.TextField(blank=True, default="")
+    last_run = models.DateTimeField(null=True, blank=True)

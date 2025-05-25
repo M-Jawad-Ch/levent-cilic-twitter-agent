@@ -1,183 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 2rem;
-            background-color: #f9f9f9;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            max-width: 900px;
-            margin: auto;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logout-button {
-            padding: 0.5rem 1rem;
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .toggle-form {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1.5rem;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .switch input { display: none; }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0;
-            right: 0; bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #4caf50;
-        }
-        input:checked + .slider:before {
-            transform: translateX(26px);
-        }
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-        }
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        th {
-            background-color: #f0f0f0;
-        }
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
 
-        .pagination {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        .pagination a {
-            text-decoration: none;
-            color: #007bff;
-            margin: 0 0.5rem;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
 
-        .status-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .status-label {
-            font-weight: bold;
-            color: {% if bot_status %}green{% else %}red{% endif %};
-        }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin: auto;
+    }
 
-        .interval-input {
-            padding: 0.4rem;
-            width: 100px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-    </style>
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .logout-button {
+      padding: 0.5rem 1.2rem;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-button:hover {
+      background-color: #b02a37;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    label {
+      /* min-width: 160px; */
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    input[type="number"] {
+      width: 110px;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      font-family: inherit;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.2s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+
+    textarea {
+      flex: 1;
+      min-height: 100px;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      font-family: inherit;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: border-color 0.2s ease;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 28px;
+      height: 14px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 14px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 10px;
+      width: 10px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked+.slider {
+      background-color: #4caf50;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(14px);
+    }
+
+    .status-text {
+      font-weight: 700;
+
+      color: {
+        % if bot_status %
+      }
+
+      #28a745 {
+        % else %
+      }
+
+      #dc3545 {
+        % endif %
+      }
+
+      ;
+      font-size: 1rem;
+      min-width: 30px;
+    }
+
+    button[type="submit"] {
+      width: 140px;
+      padding: 0.6rem 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2.2rem;
+    }
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #f7f7f7;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 1.6rem;
+    }
+
+    .pagination a {
+      text-decoration: none;
+      color: #007bff;
+      margin: 0 0.5rem;
+      font-weight: 600;
+    }
+  </style>
+
+
 </head>
+
 <body>
-    <div class="card">
-        <div class="top-bar">
-            <h1>Bot Dashboard</h1>
-            <a href="{% url 'logout' %}" class="logout-button">Logout</a>
-        </div>
-
-        <form method="POST" class="toggle-form">
-            {% csrf_token %}
-            <div class="status-section">
-                <div>
-                    Bot Status:
-                    <span class="status-label">
-                        {% if bot_status %} ON {% else %} OFF {% endif %}
-                    </span>
-                </div>
-
-                <div>
-                    <label for="interval_minutes"><strong>Tweet Interval (minutes):</strong></label><br>
-                    <input type="number" id="interval_minutes" name="interval_minutes" min="90" value="{{ interval_minutes }}" class="interval-input">
-                </div>
-            </div>
-
-            <label class="switch">
-                <input type="checkbox" name="bot_status" {% if bot_status %}checked{% endif %} onchange="this.form.submit()">
-                <span class="slider"></span>
-            </label>
-        </form>
-
-        <h2 style="margin-top: 2rem;">Recent Tweets</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tweet ID</th>
-                    <th>Content</th>
-                    <th>Tweeted At</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tweet in tweets %}
-                    <tr>
-                        <td>{{ tweet.twitter_id }}</td>
-                        <td>{{ tweet.content|truncatechars:100 }}</td>
-                        <td>{{ tweet.tweeted_at|date:"Y-m-d H:i" }}</td>
-                    </tr>
-                {% empty %}
-                    <tr><td colspan="3">No tweets available.</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="pagination">
-            {% if tweets.has_previous %}
-                <a href="?page={{ tweets.previous_page_number }}">&laquo; Prev</a>
-            {% endif %}
-            Page {{ tweets.number }} of {{ tweets.paginator.num_pages }}
-            {% if tweets.has_next %}
-                <a href="?page={{ tweets.next_page_number }}">Next &raquo;</a>
-            {% endif %}
-        </div>
+  <div class="card">
+    <div class="top-bar">
+      <h1>Bot Dashboard</h1>
+      <a href="{% url 'logout' %}" class="logout-button">Logout</a>
     </div>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <label>Bot Status:</label>
+        <span class="status-text">{% if bot_status %}ON{% else %}OFF{% endif %}</span>
+        <label class="switch" title="Toggle Bot Status">
+          <input type="checkbox" name="bot_status" {% if bot_status %}checked{% endif %}>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="form-row">
+        <label for="interval_minutes">Tweet Interval (minutes):</label>
+        <input type="number" id="interval_minutes" name="interval_minutes" min="90" value="{{ interval_minutes }}">
+      </div>
+
+      <div class="form-row" style="flex-direction: column; align-items: stretch;">
+        <label for="ai_prompt" style="margin-bottom: 0.4rem;">AI Prompt:</label>
+        <textarea id="ai_prompt" name="ai_prompt" placeholder="Enter your AI prompt here...">{{ ai_prompt }}</textarea>
+      </div>
+
+      <button type="submit">Save Settings</button>
+    </form>
+
+    <h2>Recent Tweets</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Tweet ID</th>
+          <th>Content</th>
+          <th>Tweeted At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tweet in tweets %}
+        <tr>
+          <td>{{ tweet.twitter_id }}</td>
+          <td>{{ tweet.content|truncatechars:100 }}</td>
+          <td>{{ tweet.tweeted_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3">No tweets available.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      {% if tweets.has_previous %}
+      <a href="?page={{ tweets.previous_page_number }}">&laquo; Prev</a>
+      {% endif %}
+      Page {{ tweets.number }} of {{ tweets.paginator.num_pages }}
+      {% if tweets.has_next %}
+      <a href="?page={{ tweets.next_page_number }}">Next &raquo;</a>
+      {% endif %}
+    </div>
+  </div>
 </body>
+
 </html>
